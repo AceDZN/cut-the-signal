@@ -1,0 +1,40 @@
+{
+  "name": "cut-the-signal",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 5173 --strictPort",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --host 127.0.0.1 --port 4173 --strictPort",
+    "test": "tsx --test tests/*.test.ts",
+    "test:browser": "node --import tsx scripts/browser-check.mjs",
+    "format": "prettier --write src tests scripts index.html *.json",
+    "format:check": "prettier --check src tests scripts index.html *.json",
+    "capture:reference": "node scripts/capture-reference-views.mjs"
+  },
+  "devDependencies": {
+    "@gltf-transform/cli": "4.5.1",
+    "@types/three": "0.186.0",
+    "playwright": "1.61.1",
+    "prettier": "3.9.10",
+    "tsx": "4.23.15",
+    "typescript": "7.0.2",
+    "vite": "8.3.5"
+  },
+  "dependencies": {
+    "three": "0.186.1"
+  },
+  "description": "A 3D orbital salvage puzzle game with 20 levels. Drive, dismantle your signal network, and trust your uploaded route home.",
+  "author": "AceDZN (https://acedzn.dev)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AceDZN/cut-the-signal.git"
+  },
+  "bugs": {
+    "url": "https://github.com/AceDZN/cut-the-signal/issues"
+  },
+  "engines": {
+    "node": "24.x"
+  }
+}

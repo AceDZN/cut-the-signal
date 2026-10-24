@@ -1,0 +1,176 @@
+{
+  "schemaVersion": 1,
+  "coordinateSystem": "Diagram units; origin top-left, x right, y down. Scale to the canvas without changing simulation state.",
+  "commandFormat": "move:<room-id> | salvage | extract",
+  "note": "Handoff starter data. Witness programs are for development tests, not the normal player UI.",
+  "levels": [
+    {
+      "id": "first-contact",
+      "name": "First Contact",
+      "dock": "dock",
+      "bufferLimit": 4,
+      "quota": 3,
+      "rooms": [
+        {
+          "id": "dock",
+          "label": "Dock",
+          "x": 1,
+          "y": 2,
+          "relay": true,
+          "salvageValue": 0
+        },
+        {
+          "id": "a",
+          "label": "Receiver A",
+          "x": 3,
+          "y": 2,
+          "relay": true,
+          "salvageValue": 1
+        },
+        {
+          "id": "b",
+          "label": "Survey Relay",
+          "x": 5,
+          "y": 2,
+          "relay": true,
+          "salvageValue": 3
+        }
+      ],
+      "corridors": [
+        { "from": "dock", "to": "a", "oneWay": false },
+        { "from": "a", "to": "b", "oneWay": false }
+      ],
+      "wires": [
+        ["dock", "a"],
+        ["a", "b"]
+      ],
+      "witnessPrograms": [
+        ["move:a", "move:b", "salvage", "move:a"],
+        ["salvage", "move:dock", "extract"]
+      ],
+      "witnessValue": 4,
+      "intendedFailurePrograms": [["move:a", "move:b", "salvage"]],
+      "teachingPoint": "Disconnection does not stop the uploaded return. Ending the program offline strands the drone."
+    },
+    {
+      "id": "use-it-then-lose-it",
+      "name": "Use It, Then Lose It",
+      "dock": "dock",
+      "bufferLimit": 4,
+      "quota": 6,
+      "rooms": [
+        {
+          "id": "dock",
+          "label": "Dock",
+          "x": 1,
+          "y": 3,
+          "relay": true,
+          "salvageValue": 0
+        },
+        {
+          "id": "a",
+          "label": "Uplink",
+          "x": 3,
+          "y": 3,
+          "relay": true,
+          "salvageValue": 2
+        },
+        {
+          "id": "b",
+          "label": "Core Relay",
+          "x": 5,
+          "y": 1,
+          "relay": true,
+          "salvageValue": 4
+        },
+        {
+          "id": "c",
+          "label": "Dark Passage",
+          "x": 6,
+          "y": 5,
+          "relay": false,
+          "salvageValue": 0
+        }
+      ],
+      "corridors": [
+        { "from": "dock", "to": "a", "oneWay": false },
+        { "from": "a", "to": "b", "oneWay": true },
+        { "from": "b", "to": "c", "oneWay": true },
+        { "from": "c", "to": "a", "oneWay": true }
+      ],
+      "wires": [
+        ["dock", "a"],
+        ["a", "b"]
+      ],
+      "witnessPrograms": [
+        ["move:a"],
+        ["move:b", "salvage", "move:c", "move:a"],
+        ["salvage", "move:dock", "extract"]
+      ],
+      "witnessValue": 6,
+      "intendedFailurePrograms": [["move:a", "salvage", "move:b", "salvage"]],
+      "teachingPoint": "Keep the useful receiver until after the one-way loop, then remove it on your final trip home."
+    },
+    {
+      "id": "alternative-feed",
+      "name": "Alternative Feed",
+      "dock": "dock",
+      "bufferLimit": 4,
+      "quota": 10,
+      "rooms": [
+        {
+          "id": "dock",
+          "label": "Dock",
+          "x": 1,
+          "y": 3,
+          "relay": true,
+          "salvageValue": 0
+        },
+        {
+          "id": "a",
+          "label": "Feed A",
+          "x": 3,
+          "y": 1,
+          "relay": true,
+          "salvageValue": 3
+        },
+        {
+          "id": "b",
+          "label": "Battery Relay",
+          "x": 5,
+          "y": 3,
+          "relay": true,
+          "salvageValue": 4
+        },
+        {
+          "id": "c",
+          "label": "Feed C",
+          "x": 3,
+          "y": 5,
+          "relay": true,
+          "salvageValue": 3
+        }
+      ],
+      "corridors": [
+        { "from": "dock", "to": "a", "oneWay": true },
+        { "from": "a", "to": "b", "oneWay": true },
+        { "from": "b", "to": "c", "oneWay": true },
+        { "from": "c", "to": "dock", "oneWay": true }
+      ],
+      "wires": [
+        ["dock", "a"],
+        ["a", "b"],
+        ["dock", "c"],
+        ["c", "b"]
+      ],
+      "witnessPrograms": [
+        ["move:a", "salvage", "move:b"],
+        ["salvage", "move:c"],
+        ["salvage", "move:dock", "extract"]
+      ],
+      "witnessValue": 10,
+      "intendedFailurePrograms": [["move:a", "salvage"]],
+      "teachingPoint": "After Feed A is cut, the battery receiver remains connected through Feed C. Signal is graph reachability, not a fixed parent chain."
+    }
+  ]
+}
